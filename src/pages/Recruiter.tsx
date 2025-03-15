@@ -3,10 +3,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, User, FileText, Briefcase, Star, Plus } from "lucide-react";
+import { ChevronLeft, User, FileText, Briefcase, Star, Plus, CheckCircle } from "lucide-react";
 import SwipeLink from "@/components/SwipeLink";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
 
 // Sample candidate data with Indian names
 const sampleCandidates = [
@@ -176,6 +177,7 @@ const Recruiter = () => {
   const navigate = useNavigate();
   const [currentCandidateIndex, setCurrentCandidateIndex] = useState(0);
   const [shortlistedCandidates, setShortlistedCandidates] = useState<number[]>([]);
+  const { toast } = useToast();
   
   const currentCandidate = sampleCandidates[currentCandidateIndex];
   
@@ -192,6 +194,12 @@ const Recruiter = () => {
   const handleSwipeRight = () => {
     // Shortlist candidate
     setShortlistedCandidates([...shortlistedCandidates, currentCandidate.id]);
+    
+    // Show toast notification
+    toast({
+      title: "Candidate Shortlisted",
+      description: `${currentCandidate.name} has been added to your shortlist.`,
+    });
     
     if (currentCandidateIndex < sampleCandidates.length - 1) {
       setCurrentCandidateIndex(currentCandidateIndex + 1);
