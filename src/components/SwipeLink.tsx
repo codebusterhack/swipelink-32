@@ -85,19 +85,19 @@ const SwipeLink = ({ children, onSwipeLeft, onSwipeRight, allowSwipe = true }: S
         <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-6 z-10">
           <Button 
             size="icon" 
-            className="bg-destructive/90 hover:bg-destructive rounded-full w-14 h-14 shadow-lg"
+            className="bg-[#403E43]/90 hover:bg-[#403E43] rounded-full w-14 h-14 shadow-lg"
             onClick={handleSwipeLeft}
             aria-label="Reject"
           >
-            <X size={28} />
+            <X size={28} className="text-white" />
           </Button>
           <Button 
             size="icon" 
-            className="bg-neon-green/90 hover:bg-neon-green rounded-full w-14 h-14 neon-glow-green shadow-lg"
+            className="bg-[#8A898C]/90 hover:bg-[#8A898C] rounded-full w-14 h-14 shadow-lg"
             onClick={handleSwipeRight}
             aria-label="Accept"
           >
-            <Check size={28} />
+            <Check size={28} className="text-white" />
           </Button>
         </div>
       )}

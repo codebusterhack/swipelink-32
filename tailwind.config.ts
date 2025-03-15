@@ -63,7 +63,7 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Futuristic neon colors
+				// Professional neon colors
 				neon: {
 					purple: '#8B5CF6',
 					pink: '#EC4899',
