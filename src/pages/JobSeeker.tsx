@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -6,7 +7,6 @@ import { Building, FileText, Briefcase, ChevronLeft, Send, Filter } from "lucide
 import SwipeLink from "@/components/SwipeLink";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/hooks/use-toast";
 
 // Sample job data with Indian company names
 const sampleJobs = [
@@ -185,7 +185,6 @@ const JobSeeker = () => {
   const [showAppliedMessage, setShowAppliedMessage] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
-  const { toast } = useToast();
 
   const currentJob = filteredJobs[currentJobIndex];
   
@@ -215,13 +214,6 @@ const JobSeeker = () => {
   const handleSwipeRight = () => {
     // Apply for job
     setAppliedJobs([...appliedJobs, currentJob.id]);
-    
-    // Show toast notification
-    toast({
-      title: "Application Sent!",
-      description: `Your application for ${currentJob.title} at ${currentJob.company} has been submitted.`,
-    });
-    
     setShowAppliedMessage(true);
     
     setTimeout(() => {
