@@ -1,17 +1,17 @@
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, PanInfo, useAnimation } from "framer-motion";
 import { Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-interface SwipeCardProps {
+interface SwipeLinkProps {
   children: React.ReactNode;
   onSwipeLeft: () => void;
   onSwipeRight: () => void;
   allowSwipe?: boolean;
 }
 
-const SwipeCard = ({ children, onSwipeLeft, onSwipeRight, allowSwipe = true }: SwipeCardProps) => {
+const SwipeLink = ({ children, onSwipeLeft, onSwipeRight, allowSwipe = true }: SwipeLinkProps) => {
   const controls = useAnimation();
   const [isDragging, setIsDragging] = useState(false);
   const constraintsRef = useRef(null);
@@ -43,6 +43,24 @@ const SwipeCard = ({ children, onSwipeLeft, onSwipeRight, allowSwipe = true }: S
     onSwipeRight();
   };
 
+  // Add keyboard event listeners
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!allowSwipe) return;
+      
+      if (e.key === 'ArrowLeft') {
+        handleSwipeLeft();
+      } else if (e.key === 'ArrowRight') {
+        handleSwipeRight();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [allowSwipe]);
+
   return (
     <div className="relative w-full max-w-md mx-auto h-[500px]" ref={constraintsRef}>
       <motion.div
@@ -67,15 +85,17 @@ const SwipeCard = ({ children, onSwipeLeft, onSwipeRight, allowSwipe = true }: S
         <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-6 z-10">
           <Button 
             size="icon" 
-            className="bg-destructive/90 hover:bg-destructive rounded-full w-14 h-14"
+            className="bg-destructive/90 hover:bg-destructive rounded-full w-14 h-14 shadow-lg"
             onClick={handleSwipeLeft}
+            aria-label="Reject"
           >
             <X size={28} />
           </Button>
           <Button 
             size="icon" 
-            className="bg-neon-green/90 hover:bg-neon-green rounded-full w-14 h-14 neon-glow-green"
+            className="bg-neon-green/90 hover:bg-neon-green rounded-full w-14 h-14 neon-glow-green shadow-lg"
             onClick={handleSwipeRight}
+            aria-label="Accept"
           >
             <Check size={28} />
           </Button>
@@ -85,4 +105,4 @@ const SwipeCard = ({ children, onSwipeLeft, onSwipeRight, allowSwipe = true }: S
   );
 };
 
-export default SwipeCard;
+export default SwipeLink;

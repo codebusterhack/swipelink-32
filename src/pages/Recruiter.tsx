@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, User, FileText, Briefcase, Star, Plus } from "lucide-react";
-import SwipeCard from "@/components/SwipeCard";
+import SwipeLink from "@/components/SwipeLink";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 
@@ -103,7 +102,7 @@ const Recruiter = () => {
             animate={{ opacity: 1 }}
             className="w-full max-w-md"
           >
-            <SwipeCard
+            <SwipeLink
               onSwipeLeft={handleSwipeLeft}
               onSwipeRight={handleSwipeRight}
             >
@@ -151,12 +150,12 @@ const Recruiter = () => {
                   <p className="text-muted-foreground">{currentCandidate.experience}</p>
                 </div>
                 
-                <div className="mt-auto flex justify-between text-sm text-muted-foreground">
+                <div className="mt-auto pt-10 flex justify-between text-sm text-muted-foreground">
                   <span>← Swipe left to reject</span>
                   <span>Swipe right to shortlist →</span>
                 </div>
               </div>
-            </SwipeCard>
+            </SwipeLink>
           </motion.div>
         ) : (
           <div className="text-center">

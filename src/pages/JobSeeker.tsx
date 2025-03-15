@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Building, FileText, Briefcase, ChevronLeft, Send } from "lucide-react";
-import SwipeCard from "@/components/SwipeCard";
+import SwipeLink from "@/components/SwipeLink";
 import { Badge } from "@/components/ui/badge";
 
 // Sample job data
@@ -108,7 +108,7 @@ const JobSeeker = () => {
               animate={{ opacity: 1 }}
               className="w-full max-w-md"
             >
-              <SwipeCard
+              <SwipeLink
                 onSwipeLeft={handleSwipeLeft}
                 onSwipeRight={handleSwipeRight}
               >
@@ -140,12 +140,12 @@ const JobSeeker = () => {
                     <p className="text-muted-foreground">{currentJob.description}</p>
                   </div>
                   
-                  <div className="mt-auto flex justify-between text-sm text-muted-foreground">
+                  <div className="mt-auto pt-10 flex justify-between text-sm text-muted-foreground">
                     <span>← Swipe left to skip</span>
                     <span>Swipe right to apply →</span>
                   </div>
                 </div>
-              </SwipeCard>
+              </SwipeLink>
             </motion.div>
             
             {/* Applied message overlay */}
