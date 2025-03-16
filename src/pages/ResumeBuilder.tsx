@@ -74,7 +74,7 @@ const ResumeBuilder = () => {
         <Button 
           variant="outline" 
           size="icon" 
-          onClick={() => navigate("/job-seeker")}
+          onClick={() => navigate("/")}
         >
           <ChevronLeft size={22} />
         </Button>
