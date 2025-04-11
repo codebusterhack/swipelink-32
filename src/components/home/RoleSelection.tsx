@@ -3,25 +3,14 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Check, User, Users, FileText } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const RoleSelection = () => {
-  const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
   
   const handleRoleSelection = (role: string) => {
     setSelectedRole(role);
-    
-    // Add a small delay for animation
-    setTimeout(() => {
-      if (role === "jobseeker") {
-        navigate("/job-seeker");
-      } else if (role === "recruiter") {
-        navigate("/recruiter");
-      } else if (role === "resume") {
-        navigate("/resume-builder");
-      }
-    }, 500);
+    // We'll use Link component for navigation instead of useNavigate
   };
 
   return (
@@ -47,12 +36,14 @@ const RoleSelection = () => {
           <p className="text-muted-foreground mb-6 flex-grow">
             Find perfect job matches with a swipe-based interface
           </p>
-          <Button 
-            variant="outline" 
-            className="border-neon-blue text-neon-blue hover:bg-neon-blue/20 hover:text-white"
-          >
-            <Check className="mr-2 h-4 w-4" /> Get Started
-          </Button>
+          <Link to="/job-seeker">
+            <Button 
+              variant="outline" 
+              className="border-neon-blue text-neon-blue hover:bg-neon-blue/20 hover:text-white"
+            >
+              <Check className="mr-2 h-4 w-4" /> Get Started
+            </Button>
+          </Link>
         </div>
       </motion.div>
 
@@ -72,12 +63,14 @@ const RoleSelection = () => {
           <p className="text-muted-foreground mb-6 flex-grow">
             Find perfect candidates with powerful matching
           </p>
-          <Button 
-            variant="outline" 
-            className="border-neon-pink text-neon-pink hover:bg-neon-pink/20 hover:text-white"
-          >
-            <Check className="mr-2 h-4 w-4" /> Get Started
-          </Button>
+          <Link to="/recruiter">
+            <Button 
+              variant="outline" 
+              className="border-neon-pink text-neon-pink hover:bg-neon-pink/20 hover:text-white"
+            >
+              <Check className="mr-2 h-4 w-4" /> Get Started
+            </Button>
+          </Link>
         </div>
       </motion.div>
       
@@ -97,12 +90,14 @@ const RoleSelection = () => {
           <p className="text-muted-foreground mb-6 flex-grow">
             Create an ATS-optimized resume to stand out
           </p>
-          <Button 
-            variant="outline" 
-            className="border-neon-purple text-neon-purple hover:bg-neon-purple/20 hover:text-white"
-          >
-            <Check className="mr-2 h-4 w-4" /> Get Started
-          </Button>
+          <Link to="/resume-builder">
+            <Button 
+              variant="outline" 
+              className="border-neon-purple text-neon-purple hover:bg-neon-purple/20 hover:text-white"
+            >
+              <Check className="mr-2 h-4 w-4" /> Get Started
+            </Button>
+          </Link>
         </div>
       </motion.div>
     </motion.div>
