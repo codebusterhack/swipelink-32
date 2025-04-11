@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +8,7 @@ import {
   FileText, 
   Briefcase, 
   GraduationCap, 
-  Award, 
+  Award,
   Save,
   Check
 } from "lucide-react";
@@ -18,9 +17,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const ResumeBuilder = () => {
   const navigate = useNavigate();
+  const resumeRef = useRef<HTMLDivElement>(null);
   
   const [personalInfo, setPersonalInfo] = useState({
     name: "",
@@ -50,7 +52,6 @@ const ResumeBuilder = () => {
   const [skills, setSkills] = useState("");
   
   const handleSaveResume = () => {
-    // In a real app, this would save the resume to local storage or a database
     toast({
       title: "Resume Saved!",
       description: "Your resume has been saved successfully.",
@@ -58,18 +59,61 @@ const ResumeBuilder = () => {
     });
   };
   
-  const handleDownloadPDF = () => {
-    // In a real app, this would generate a PDF of the resume
+  const handleDownloadPDF = async () => {
+    if (!resumeRef.current) return;
+    
     toast({
-      title: "Resume Downloaded!",
-      description: "Your ATS-optimized resume has been downloaded.",
-      duration: 3000,
+      title: "Generating PDF...",
+      description: "Please wait while we prepare your resume.",
+      duration: 2000,
     });
+
+    try {
+      setTimeout(async () => {
+        const canvas = await html2canvas(resumeRef.current!, {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          backgroundColor: "#ffffff"
+        });
+        
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4',
+        });
+        
+        const imgWidth = 210;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        
+        const filename = personalInfo.name 
+          ? `${personalInfo.name.toLowerCase().replace(/\s+/g, '-')}-resume.pdf` 
+          : 'swipelink-resume.pdf';
+          
+        pdf.save(filename);
+        
+        toast({
+          title: "Resume Downloaded!",
+          description: "Your ATS-optimized resume has been downloaded successfully.",
+          duration: 3000,
+        });
+      }, 500);
+    } catch (error) {
+      toast({
+        title: "Download Failed",
+        description: "There was an error generating your resume. Please try again.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      console.error("Error generating PDF:", error);
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground p-4">
-      {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <Button 
           variant="outline" 
@@ -89,9 +133,7 @@ const ResumeBuilder = () => {
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Left Side: Form Fields */}
         <div className="space-y-6 overflow-auto pb-4">
-          {/* Personal Information */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -158,7 +200,6 @@ const ResumeBuilder = () => {
             </div>
           </motion.div>
           
-          {/* Education */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -224,7 +265,6 @@ const ResumeBuilder = () => {
             </div>
           </motion.div>
           
-          {/* Experience */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -302,7 +342,6 @@ const ResumeBuilder = () => {
             </div>
           </motion.div>
           
-          {/* Skills */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -340,7 +379,6 @@ const ResumeBuilder = () => {
           </div>
         </div>
         
-        {/* Right Side: Resume Preview */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -358,7 +396,7 @@ const ResumeBuilder = () => {
             </div>
             
             <Card className="w-full bg-white text-black overflow-hidden">
-              <CardContent className="p-8">
+              <CardContent className="p-8" ref={resumeRef}>
                 {personalInfo.name ? (
                   <h1 className="text-2xl font-bold text-center mb-4">{personalInfo.name}</h1>
                 ) : (
